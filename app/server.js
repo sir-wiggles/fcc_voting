@@ -14,7 +14,7 @@ var Poll       = require("./models/poll");
 const ObjectId = mongoose.Types.ObjectId;
 
 var app  = express();
-var port = process.env.PORT || 8080;
+var port = process.env.PORT || 3001;
 
 mongoose.Promise = global.Promise;
 mongoose.connect(config.database);
@@ -101,6 +101,13 @@ apiRoutes.get("/polls/:pid", function(req, res) {
     );
 });
 
+apiRoutes.get("/polls", function(req, res) {
+    Poll.find({}, function(err, data) {
+        if (err) throw err;
+        res.json(data);
+    });
+});
+
 apiRoutes.use(function(req, res, next) {
     var token = req.body.token || req.query.token || req.headers["x-access-token"];
 
@@ -159,7 +166,7 @@ apiRoutes.delete("/user/polls/:id", function(req, res) {
     );
 });
 
-apiRoutes.post("/user/polls/", function(req, res) {
+apiRoutes.post("/user/polls", function(req, res) {
     var title   = req.body.title;
     var choices = req.body.choices;
 
@@ -190,6 +197,8 @@ apiRoutes.post("/user/polls/", function(req, res) {
 
 app.use("/api", apiRoutes);
 
-server = app.listen(port);
+server = app.listen(port, function() {
+    console.log("listining on port " + port);
+});
 
 module.exports = server;
