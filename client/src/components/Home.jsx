@@ -11,14 +11,11 @@ let Home = React.createClass({
         return {data: Store.getPolls()};
     },
     componentWillMount: function() {
-        console.log("Home.componentWillMount");
-        console.log(this.props.location.pathname);
         let _this = this;
         let req = new XMLHttpRequest();
         req.onreadystatechange = function(){
             if (req.readyState === 4) {
                 let data = JSON.parse(req.response);
-                console.log(data);
                 if (data) {
                     Actions.setPolls({type: "all", data: data});
                 } else {
@@ -33,25 +30,11 @@ let Home = React.createClass({
     },
 
     componentDidMount: function() { 
-        console.log("Home.componentDidMount")
-        console.log(this.props.location.pathname);
         Store.addChangeListener(this._onChange);
     },
 
     componentWillUnmount: function() {
-        console.log("Home.componentWillUnmount")
-        console.log(this.props.location.pathname);
         Store.removeChangeListener(this._onChange);
-    },
-
-    componentWillReceiveProps: function() {
-        console.log("Home.componentWillReceiveProps");
-        console.log(this.props.location.pathname);
-    },
-
-    componentDidReceiveProps: function() {
-        console.log("Home.componentDidReceiveProps");
-        console.log(this.props.location.pathname);
     },
 
     _onChange: function() {

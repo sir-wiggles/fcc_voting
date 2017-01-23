@@ -6,17 +6,14 @@ const Actions = require("../controllers/actions");
 let Login = React.createClass({
 
     componentDidMount: function() { 
-        console.log("Login.componentDidMount");
         Store.addChangeListener(this._onChange);
     },
 
     componentWillUnmount: function() {
-        console.log("Login.componentWillUnmount");
         Store.removeChangeListener(this._onChange);
     },
 
     _onChange: function() {
-        console.log("Login._onChange");
         this.setState({});
     },
 
@@ -25,7 +22,6 @@ let Login = React.createClass({
         let username = ReactDOM.findDOMNode(this.refs.username).value;
         let password = ReactDOM.findDOMNode(this.refs.password).value;
         let body = {username: username, password: password};
-        console.log("Login.handleLogin");
 
         let req = new XMLHttpRequest();
         req.onreadystatechange = function() {

@@ -17,7 +17,6 @@ let MyPolls = React.createClass({
         req.onreadystatechange = function(){
             if (req.readyState === 4) {
                 let data = JSON.parse(req.response);
-                console.log(data);
                 if (data) {
                     Actions.setPolls({type: "my", data: data});
                 } else {

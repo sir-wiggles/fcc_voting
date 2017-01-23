@@ -9,14 +9,10 @@ let PollView = React.createClass({
     },
 
     componentDidMount: function() { 
-        console.log("Home.componentDidMount")
-        console.log(this.props.location.pathname);
         Store.addChangeListener(this._onChange);
     },
 
     componentWillUnmount: function() {
-        console.log("Home.componentWillUnmount")
-        console.log(this.props.location.pathname);
         Store.removeChangeListener(this._onChange);
     },
 
@@ -28,7 +24,6 @@ let PollView = React.createClass({
 
     render: function() {
         let poll = Store.getPoll(this.props.params.pid);
-        console.log(poll);
         if (poll.length === 0) {
             return <div></div>;
         };

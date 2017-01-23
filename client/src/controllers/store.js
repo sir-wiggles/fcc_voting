@@ -11,11 +11,9 @@ const _store = {
 
 var Store = Object.assign({}, EventEmitter.prototype, {
     addChangeListener: function(cb) {
-        console.log("Store.addChangeListener", cb);
         this.on(Constants.CHANGE_EVENT, cb);
     },
     removeChangeListener: function(cb) {
-        console.log("Store.removeChangeListener", cb);
         this.removeListener(Constants.CHANGE_EVENT, cb);
     },
     isAuthenticated: function() {
@@ -65,7 +63,6 @@ function signup(data) {
 }
 
 Dispatcher.register(function(payload) {
-    console.log("Dispatche.register", payload);
     var action = payload.action;
     switch(action.actionType) {
         case Constants.LOGOUT:

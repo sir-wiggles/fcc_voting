@@ -6,17 +6,14 @@ const Actions  = require("../controllers/actions");
 let Signup = React.createClass({
 
     componentDidMount: function() { 
-        console.log("Login.componentDidMount");
         Store.addChangeListener(this._onChange);
     },
 
     componentWillUnmount: function() {
-        console.log("Login.componentWillUnmount");
         Store.removeChangeListener(this._onChange);
     },
 
     _onChange: function() {
-        console.log("Login._onChange");
         this.setState({});
     },
 
@@ -31,7 +28,6 @@ let Signup = React.createClass({
         req.onreadystatechange = function() {
             if (req.readyState === 4) {
                 let data = JSON.parse(req.response);
-                console.log(data);
                 if (data.success) {
                     _this.props.route.history.push("/");
                     Actions.signup(data);

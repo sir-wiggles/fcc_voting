@@ -10,12 +10,10 @@ const Actions = require("../controllers/actions");
 let App = React.createClass({
 
     componentDidMount: function() { 
-        console.log("App.componentDidMount")
         Store.addChangeListener(this._onChange);
     },
 
     componentWillUnmount: function() {
-        console.log("App.componentWillUnmount")
         Store.removeChangeListener(this._onChange);
     },
 
@@ -26,7 +24,6 @@ let App = React.createClass({
     },
 
     handleLogout: function() {
-        console.log("handleLogout");
         this.props.route.history.push("/");
         Actions.logout(); 
     },
