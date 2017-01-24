@@ -7,7 +7,7 @@
     "start": "concurrently \"npm run client\" \"npm run server\"",
     "test": "./node_modules/mocha/bin/mocha",
     "client": "cd client && npm start",
-    "server": "export NODE_ENV=dev && nodemon app/server.js"
+    "server": "export NODE_ENV=dev && nodemon server.js"
   },
   "author": "",
   "license": "ISC",

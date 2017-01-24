@@ -9,10 +9,10 @@ let chai     = require('chai');
 let chaiHttp = require('chai-http');
 let should   = chai.should();
 
-let server = require('../app/server');
-let config = require("../app/config");
-let User   = require('../app/models/user');
-let Poll   = require('../app/models/poll');
+let server = require('../server');
+let config = require("../config");
+let User   = require('../models/user');
+let Poll   = require('../models/poll');
 
 chai.use(chaiHttp);
 //Our parent block
@@ -56,6 +56,24 @@ describe('Open API Calls', () => {
                     done();
                 });
         });
+        it("it should fail to create more than one user", (done) => {
+            chai.request(server)
+                .post('/api/signup')
+                .send({username: "test", password: "test"})
+                .set("Content-Type", "application/json")
+                .end((err, res) => {
+                    res.should.have.status(200);
+
+                    chai.request(server)
+                        .post('/api/signup')
+                        .send({username: "test", password: "foobar"})
+                        .set("Content-Type", "application/json")
+                        .end((err, res) => {
+                            res.should.have.status(409);
+                            done();
+                        });
+                });
+        })
     });
 
     describe('/api/auth', () => {
@@ -246,8 +264,7 @@ describe('Token required API Calls', () => {
             it("it should return one poll", (done) => {
                 let poll = user_1_polls[0]
                 chai.request(server)
-                    .get("/api/user/polls/" + poll._id)
-                    .set("x-access-token", token_1)
+                    .get("/api/polls/" + poll._id)
                     .end((err, res) => {
                         res.body.title.should.be.eq(poll.title);
                         res.body._id.should.be.eq(poll._id.toString())
@@ -258,8 +275,7 @@ describe('Token required API Calls', () => {
             it("it should return one poll from other user", (done) => {
                 let poll = user_1_polls[0]
                 chai.request(server)
-                    .get("/api/user/polls/" + poll._id)
-                    .set("x-access-token", token_2)
+                    .get("/api/polls/" + poll._id)
                     .end((err, res) => {
                         res.body.title.should.be.eq(poll.title);
                         res.body._id.should.be.eq(poll._id.toString())
