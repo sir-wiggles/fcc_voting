@@ -23,14 +23,14 @@ mongoose.connect(config.database);
 app.set("secret", config.secret);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.static('client/build'));
+app.use(express.static('public'));
 
 if (process.env.NODE_ENV !== 'test') {
     app.use(morgan("combined"));
 }
 
 app.get("/", function(req, res) {
-    res.sendFile(path.join(__dirname + '/client/build/index.html'));
+    res.sendFile(path.join(__dirname + '/index.html'));
 })
 
 var apiRoutes = express.Router();
