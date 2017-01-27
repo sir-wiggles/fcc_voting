@@ -1,34 +1,77 @@
-const React    = require("react");
-const ReactDOM = require("react-dom");
-
-const ReactRouter = require("react-router");
-const Router      = ReactRouter.Router;
-const Route       = ReactRouter.Route;
-const History     = ReactRouter.browserHistory;
-const IndexRoute  = ReactRouter.IndexRoute;
-
-const App     = require("./components/App.jsx");
-const Home    = require("./components/Home.jsx");
-const MyPolls = require("./components/MyPolls.jsx");
-const NewPoll = require("./components/NewPoll.jsx");
-const Signup  = require("./components/Signup.jsx");
-const Login   = require("./components/Login.jsx");
-const PollView = require("./components/PollView.jsx");
-
 import './index.css';
 
+import React from 'react';
+import { render } from 'react-dom';
+import {
+    hashHistory,
+    Router,
+    Route,
+    IndexRoute,
+    } from 'react-router';
+import { Provider } from 'react-redux';
+import { combineForms } from 'react-redux-form';
+import { 
+    createStore, 
+    applyMiddleware,
+    combineReducers} from 'redux';
+import createLogger from 'redux-logger';
+import thunkMiddleware from 'redux-thunk';
+//import {Map} from 'immutable';
+
+import reducer from './reducer';
+
+import {AppContainer} from './components/App';
+import { LoginForm } from './components/Login';
+import { SignupForm } from './components/Signup';
+import { AllContainer } from './components/All';
+import { MyContainer } from './components/My';
+import { ViewContainer } from './components/View';
+import { CreateForm } from './components/Create';
+
+let middleware = [thunkMiddleware];
+if (process.env.NODE_ENV !== 'production') {
+    middleware.push(createLogger({ }))
+}
 
 
-ReactDOM.render(
-  <Router history={History}>
-    <Route path="/"           history={History} component={App} >
-        <IndexRoute component={Home} />
-        <Route path="/polls"  history={History} component={MyPolls}/>
-        <Route path="/polls/:pid"  history={History} component={PollView}/>
-        <Route path="/new"    history={History} component={NewPoll}/>
-        <Route path="/login"  history={History} component={Login}/>
-        <Route path="/signup" history={History} component={Signup}/>
-    </Route>
-  </Router>,
+const store = createStore(combineReducers({
+        reducer,
+        forms: combineForms({ 
+            login : {},
+            signup: {},
+            create: {},
+            vote  : {choice: '0'},
+        })
+    }),
+    applyMiddleware(...middleware)
+)
+
+function Auth(store) {
+    return function() {
+        if (!store.getState().reducer.get("token")) {
+            hashHistory.push("login");
+        };
+    };
+};
+
+render(
+  <Provider store={store}>
+    <Router history={hashHistory}>
+        <Route path="/" component={AppContainer} >
+            <IndexRoute component={AllContainer} />        
+            <Route path="login" component={LoginForm} />        
+            <Route path="signup" component={SignupForm} />
+            <Route path="my" component={MyContainer} onEnter={Auth(store)}/>
+            <Route path="create" component={CreateForm} onEnter={Auth(store)}/>
+            <Route path="view/:id" component={ViewContainer} />
+        </Route>
+    </Router>
+  </Provider>,
   document.getElementById('root')
-);
+)
+
+//{
+    //allPolls:{ id: {} },
+    //myPolls: { id: {} },
+    //authentication: { token: "" }
+//}

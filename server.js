@@ -48,7 +48,14 @@ apiRoutes.post("/signup", function(req, res) {
                 return res.status(409).json({success: false, message: "Username taken."});
             }
         }
-        res.json({success: true, message: "User created successfully."});
+        var token = jwt.sign(user, app.get("secret"), {
+            expiresIn: "1d",
+        });
+        res.json({
+            success: true, 
+            message: "User created successfully.",
+            token: token,
+        });
     });
 });
 
@@ -118,14 +125,14 @@ apiRoutes.use(function(req, res, next) {
     if (token) {
         jwt.verify(token, app.get("secret"), function( err, decoded ) {
             if (err) {
-                return res.json({success: false, message: "Failed to authenticate token."});
+                return res.status(401).json({success: false, message: "Failed to authenticate token."});
             } else {
                 req.decoded = decoded;
                 next();
             };
         });
     } else {
-        return res.status(403).send({
+        return res.status(401).send({
             success: false,
             message: "No token provided."
         });
@@ -164,12 +171,14 @@ apiRoutes.post("/user/polls", function(req, res) {
     var title   = req.body.title;
     var choices = req.body.choices;
 
+    console.log(title, choices);
+
     if (!title) {
-        return res.json({success: false, message: "Must supply a title."});
+        return res.status(400).json({success: false, message: "Must supply a title."});
     };
 
     if (!choices) {
-        return res.json({success: false, message: "Must supply choices."});
+        return res.status(400).json({success: false, message: "Must supply choices."});
     } else {
         choices = choices.filter((d) => { return d.toString().length > 0 });
     };

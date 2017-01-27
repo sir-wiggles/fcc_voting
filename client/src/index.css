@@ -1,36 +1,20 @@
 body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
-}
-
-a.active {
-    color: #fff !important;
-    background: #0ca6c3;
-    text-decoration: none !important;
-}
-
-body {
-  background-color: #ffcc00;
+  background-color: #FFCC00;
   padding: 20px;
   margin: 0;
 }
-
 h1, h2, p, ul, li {
   font-family: Helvetica, Arial, sans-serif;
 }
-
 ul.header li {
   display: inline;
   list-style-type: none;
   margin: 0;
 }
-
 ul.header {
   background-color: #111;
   padding: 0;
 }
-
 ul.header li a {
   color: #FFF;
   font-weight: bold;
@@ -38,18 +22,61 @@ ul.header li a {
   padding: 20px;
   display: inline-block;
 }
-
 .content {
   background-color: #FFF;
   padding: 20px;
 }
-
 .content h2 {
   padding: 0;
   margin: 0;
 }
-
 .content li {
   margin-bottom: 10px;
 }
 
+Form {
+    background: #96cce7;
+    border: 1px solid black;
+    border-radius: 3px;
+    box-shadow: 4px 4px 10px black, inset 0 0 10px 3px #678ea1;
+    width: 200px;
+    position: relative;
+    margin: 0 auto;
+}
+
+Form>* {
+    display: block;
+    position: relative;
+    margin: 0px auto 0px auto;
+    padding: 4px;
+}
+
+Form>input[type=submit] {
+    margin: 4px auto;
+    width: 90px;
+}
+
+Form>label {
+    padding-left: 10px;
+}
+
+#chart {
+    display: inline-block;
+    position: absolute;
+    right: 100px;
+}
+
+.choices {
+    display: inline-block;
+    position: absolute;
+}
+
+.choice {
+    display: block;
+    margin: 10px;
+}
+
+.center-button {
+    text-align: center;
+    margin: 10px auto;
+}
