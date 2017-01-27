@@ -5,6 +5,7 @@ var mongoose   = require("mongoose");
 var jwt        = require("jsonwebtoken");
 var sha256     = require("sha256");
 var md5        = require("js-md5");
+var path       = require("path");
 
 var config     = require("./config");
 var User       = require("./models/user");
